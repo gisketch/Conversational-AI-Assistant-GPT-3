@@ -3,25 +3,26 @@ import random
 class Clips:
 
     @staticmethod
-    def idle():
-        idle_clips = ['./clips/idle1.mp4'] # add more clips in the future
-        return random.choice(idle_clips)
-    
+    def boot():
+        v = ['./clips/startup.mp4'] # add more clips in the future
+        return random.choice(v)
+
     @staticmethod
-    def listen_transition():
-        return './clips/listen_transition.mp4'
+    def idle():
+        v = ['./clips/idle_loop.mp4'] # add more clips in the future
+        return random.choice(v)
 
     @staticmethod
     def listening():
-        listening_clips = ['./clips/listen_loop.mp4', './clips/listen_loop_2.mp4']
-        return random.choice(listening_clips)
+        v = ['./clips/listen_loop.mp4']
+        return random.choice(v)
 
     @staticmethod
     def thinking():
-        thinking_clips = ['./clips/thinking_1.mp4']
-        return random.choice(thinking_clips)
+        v = ['./clips/thinking_loop.mp4']
+        return random.choice(v)
 
     @staticmethod
     def talking():
-        talking_clips = ['./clips/talking_1.mp4'] #TODO: change this placeholder
-        return random.choice(talking_clips)
+        v = ['./clips/talking_loop.mp4'] #TODO: change this placeholder
+        return random.choice(v)

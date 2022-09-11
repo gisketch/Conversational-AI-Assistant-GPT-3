@@ -9,7 +9,7 @@ class Voice:
 
     def __init__ (self):
         self.engine = pyttsx3.init()
-        self.engine.setProperty('rate', 150)
+        self.engine.setProperty('rate', 200)
         self.engine.setProperty('voice', self.engine.getProperty('voices')[1].id)
 
     def talk(self,text):

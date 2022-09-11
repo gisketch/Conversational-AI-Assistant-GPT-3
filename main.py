@@ -4,19 +4,20 @@ import gpt
 import keyboard
 import recorder as rec
 # from deepmultilingualpunctuation import PunctuationModel
-import remove_memory
+from remove_memory import remove_memory
 from play_vid import Video_Player
 from clips import Clips
 import voice
-import playsound
-import os
+# import playsound
+# import os
 
 #OUTPUT AUDIO
 def talk(text):
-    voice.talk(text)
     video_player.change(Clips.talking())
-    playsound.playsound('./temp/temp_audio2.mp3', True)
-    os.remove('./temp/temp_audio2.mp3')
+    voice.talk(text)
+    # playsound.playsound('./temp/temp_audio2.mp3', True)
+    # os.remove('./temp/temp_audio2.mp3')
+    video_player.change(Clips.idle())
 
 audio = pyaudio.PyAudio()
 
@@ -61,15 +62,14 @@ Limitations:
 - Requires internet
 - Expensive (hardware limitations)
 
-(IMPORTANT!!! Zelda does not repeat the same dialogue. She will say the same things but in a different way each time.)
 <--The following is a continuation of their previous conversation-->
 \n
 """
 
 ###############################################################
 
-voice = voice.GTTS_Voice()
-video_player = Video_Player(Clips.idle()) #initialize
+voice = voice.Voice()
+video_player = Video_Player(Clips.boot()) #initialize
 
 #FF5555 NOTE!! Improve introductions
 global new_prompt
@@ -82,7 +82,7 @@ def ai_reply(input):
     global new_prompt #This is to grab the new_prompt variable from outside the scope
     
     #If char count of the prompt is more than 4500, remove memory, THIS IS TO SAVE TOKENS
-    if len(new_prompt) > 4500:
+    if len(new_prompt) > 2000:
         new_prompt = remove_memory(new_prompt)
         print("Removed a memory")
 
@@ -103,7 +103,6 @@ def ai_reply(input):
     # print("Sentiment: " + gpt.sentiment(output))
     print("Message: " + output) #Print Zelda's reply to the console
     talk(output) #TTS the reply
-    video_player.change(Clips.idle())
 
 while True:
     #Record audio when pressing q
@@ -111,7 +110,7 @@ while True:
     keyboard.wait("q")
 
     #CHANGE VIDEO
-    video_player.change(Clips.listen_transition())
+    video_player.change(Clips.listening())
 
     transcribed_text = rec.record_audio(audio,r,sr)
 

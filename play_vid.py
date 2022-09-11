@@ -44,8 +44,8 @@ class Video_Player:
         
         # Break the loop
             else:
-                if(self.vid_path == './clips/listen_transition.mp4'):
-                    self.change(Clips.listening())
+                if(self.vid_path == Clips.boot()):
+                    self.change(Clips.idle())
                 self.cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
                 continue
         
