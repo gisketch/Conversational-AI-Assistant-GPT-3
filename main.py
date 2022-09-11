@@ -8,11 +8,15 @@ import remove_memory
 from play_vid import Video_Player
 from clips import Clips
 import voice
+import playsound
+import os
 
 #OUTPUT AUDIO
 def talk(text):
-    video_player.change(Clips.talking())
     voice.talk(text)
+    video_player.change(Clips.talking())
+    playsound.playsound('./temp/temp_audio2.mp3', True)
+    os.remove('./temp/temp_audio2.mp3')
 
 audio = pyaudio.PyAudio()
 
@@ -64,7 +68,7 @@ Limitations:
 
 ###############################################################
 
-voice = voice.Voice()
+voice = voice.GTTS_Voice()
 video_player = Video_Player(Clips.idle()) #initialize
 
 #FF5555 NOTE!! Improve introductions
@@ -115,10 +119,10 @@ while True:
     #99ff9933 For testing
     # transcribed_text = input("Human: ") 
     #TODO: Enable for punctuation
-    recased_text = gpt.punctuate(transcribed_text)
-    print("Human: " + recased_text)
+    # recased_text = gpt.punctuate(transcribed_text)
+    print("Human: " + transcribed_text)
 
-    ai_reply(recased_text)
+    ai_reply(transcribed_text)
 
     
         

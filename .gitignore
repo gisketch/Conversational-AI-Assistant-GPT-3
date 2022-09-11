@@ -4,3 +4,4 @@
 *.mp4
 temp/myrecording.wav
 tokens.json
+*.mp3
