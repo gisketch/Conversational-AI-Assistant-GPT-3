@@ -81,7 +81,7 @@ def ai_reply(input):
     
     global new_prompt #This is to grab the new_prompt variable from outside the scope
     
-    #If char count of the prompt is more than 4500, remove memory, THIS IS TO SAVE TOKENS
+    #If char count of the prompt is more than 2000, remove memory, THIS IS TO SAVE TOKENS
     if len(new_prompt) > 2000:
         new_prompt = remove_memory(new_prompt)
         print("Removed a memory")
@@ -118,10 +118,10 @@ while True:
     #99ff9933 For testing
     # transcribed_text = input("Human: ") 
     #TODO: Enable for punctuation
-    # recased_text = gpt.punctuate(transcribed_text)
-    print("Human: " + transcribed_text)
+    recased_text = gpt.punctuate(transcribed_text)
+    print("Human: " + recased_text)
 
-    ai_reply(transcribed_text)
+    ai_reply(recased_text)
 
     
         
