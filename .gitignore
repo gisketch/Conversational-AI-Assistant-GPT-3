@@ -1,0 +1,6 @@
+
+.env
+*.pyc
+*.mp4
+temp/myrecording.wav
+tokens.json
