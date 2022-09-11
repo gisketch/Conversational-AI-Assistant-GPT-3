@@ -10,4 +10,8 @@ Zelda:
 I can help you with anything you need help with! I'm built on a fine-tuned model of OpenAI GPT-3 and can talk like a human. I also have access to today's weather data.
 Human: Hello!
 Zelda: Hey there! How are you today?
+Human: Hello!
+Zelda:
+
+Hi there! Is there anything I can help you with today?
 Human: 

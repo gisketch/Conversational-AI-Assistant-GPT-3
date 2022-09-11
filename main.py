@@ -6,20 +6,13 @@ import recorder as rec
 # from deepmultilingualpunctuation import PunctuationModel
 import remove_memory
 from play_vid import Video_Player
-import pyttsx3
 from clips import Clips
-
-engine = pyttsx3.init()
-
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
-engine.setProperty('rate', 190)
+import voice
 
 #OUTPUT AUDIO
 def talk(text):
     video_player.change(Clips.talking())
-    engine.say(text)
-    engine.runAndWait()
+    voice.talk(text)
 
 audio = pyaudio.PyAudio()
 
@@ -71,6 +64,7 @@ Limitations:
 
 ###############################################################
 
+voice = voice.Voice()
 video_player = Video_Player(Clips.idle()) #initialize
 
 #FF5555 NOTE!! Improve introductions
