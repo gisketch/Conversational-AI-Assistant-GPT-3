@@ -1,6 +1,9 @@
 
 import pyttsx3
 from gtts import gTTS
+import ffmpy
+
+
 
 class Voice:
 
@@ -17,4 +20,6 @@ class GTTS_Voice:
 
     def talk(self, text):
         tts = gTTS(text, lang='en', tld='co.uk')
-        tts.save("./temp/temp_audio.mp3")
+        tts.save("./temp/temp_audio.mp3")    
+        ff = ffmpy.FFmpeg(inputs={"./temp/temp_audio.mp3": None}, outputs={"./temp/temp_audio2.mp3": ["-filter:a", "atempo=1.3"]})
+        ff.run()
