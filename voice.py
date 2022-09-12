@@ -37,10 +37,10 @@ class Polly_Voice:
                 region_name='us-east-1').client('polly')
 
     def talk(self, text):
-        response = self.polly_client.synthesize_speech(VoiceId='Amy',
+        response = self.polly_client.synthesize_speech(VoiceId='Emma',
                 OutputFormat='mp3', 
                 Text = text,
-                Engine = 'standard')
+                Engine = 'neural')
         file = open('./temp/temp_audio.mp3', 'wb')
         file.write(response['AudioStream'].read())
         file.close()

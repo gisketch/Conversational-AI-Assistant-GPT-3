@@ -130,17 +130,22 @@ def sentiment(text):
 def weather(text):
     print("Identifying if asking about the weather...")
 
-    prompt = """Identify whether the person is asking about the weather today or not
+    prompt = """Identify whether the person is asking about the weather today or not on which location (defaults to Kabacan)
 
 <<|EXAMPLE|>>
 {"Input": "what's the weather today?"}
 <<|OUTPUT|>>
-{"Output": true}
+{"Output": true, "Location": "Kabacan", "When":"today"}
 
 <<|EXAMPLE|>>
-{"Input": "what's the weather tomorrow?"}
+{"Input": "what's the weather tomorrow in Davao?"}
 <<|OUTPUT|>>
-{"Output": false}
+{"Output": true, "Location": "Davao", "When":"tomorrow"}
+
+<<|EXAMPLE|>>
+{"Input": "Weather is good!"}
+<<|OUTPUT|>>
+{"Output": false, "Location": "none", "When":"none"}
 
 <<|EXAMPLE|>>
 {"Input": """ + '"' + text + '"}\n<<|OUTPUT|>>\n'
@@ -156,4 +161,63 @@ def weather(text):
     tokens = ( len(prompt) + len(response.choices[0].text) ) / 4
     record_token.save_token(tokens)
 
-    return output_object["Output"]
+    return output_object
+    
+#################################################
+#                      _   _                                _       
+#                     | | | |                              | |      
+#  __      _____  __ _| |_| |__   ___ _ __   _ __ ___ _ __ | |_   _ 
+#  \ \ /\ / / _ \/ _` | __| '_ \ / _ \ '__| | '__/ _ \ '_ \| | | | |
+#   \ V  V /  __/ (_| | |_| | | |  __/ |    | | |  __/ |_) | | |_| |
+#    \_/\_/ \___|\__,_|\__|_| |_|\___|_|    |_|  \___| .__/|_|\__, |
+#                                                    | |       __/ |
+#                                                    |_|      |___/ 
+#################################################
+
+def weather_reply(text):
+    prompt = text + """
+
+From the gathered data from the internet, create a sentence that will serve as a response when asked about the weather. Reply like a friend. Add bits of advice at the end.
+
+Response:"""
+
+    response = openai.Completion.create(
+        engine='text-davinci-002',
+        prompt=prompt,
+        temperature=1,
+        max_tokens = 150,)
+
+        #saves the number of tokens used
+    tokens = ( len(prompt) + len(response.choices[0].text) ) / 4
+    record_token.save_token(tokens)
+    return response.choices[0].text
+    
+#################################################
+#                      _   _                                          
+#                     | | | |                                         
+#  __      _____  __ _| |_| |__   ___ _ __    ___ _ __ _ __ ___  _ __ 
+#  \ \ /\ / / _ \/ _` | __| '_ \ / _ \ '__|  / _ \ '__| '__/ _ \| '__|
+#   \ V  V /  __/ (_| | |_| | | |  __/ |    |  __/ |  | | | (_) | |   
+#    \_/\_/ \___|\__,_|\__|_| |_|\___|_|     \___|_|  |_|  \___/|_|   
+                                                                    
+#################################################
+
+def weather_error_reply():
+    prompt = """Human: What's the weather today?
+AI: Grabbing the weather...
+...
+The weather data returns
+{"error": "wrong location or bad connection"}
+...
+AI:"""
+
+    response = openai.Completion.create(
+        engine='text-davinci-002',
+        prompt=prompt,
+        temperature=1,
+        max_tokens = 150,)
+
+        #saves the number of tokens used
+    tokens = ( len(prompt) + len(response.choices[0].text) ) / 4
+    record_token.save_token(tokens)
+    return response.choices[0].text

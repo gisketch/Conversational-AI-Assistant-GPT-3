@@ -10,6 +10,7 @@ from clips import Clips
 import voice
 from playsound import playsound
 import os
+import get_weather
 from record_token import save_output
 
 #OUTPUT AUDIO
@@ -76,7 +77,7 @@ video_player = Video_Player(Clips.boot()) #initialize
 #FF5555 NOTE!! Improve introductions
 global new_prompt
 
-with open('./database/conversation.txt','r') as myfile:
+with open('./database/conversation.txt','r',encoding="utf-8") as myfile:
     new_prompt = myfile.read()
 
 def ai_reply(input):
@@ -92,20 +93,36 @@ def ai_reply(input):
     prompt = new_prompt + input +"\nZelda:"
 
     print("\nGenerating a reply...")
+
     #Grab an output by inputting the new_prompt and the core_memory to the default GPT-3 completion
-    output = gpt.default(prompt, core_prompt)
+    if 'weather' in input.lower():
+        weather_info = gpt.weather(input)
+        if weather_info["Output"] == True:
+            print(weather_info)
+            weather_info_2 = get_weather.get_weather_data(weather_info["Location"], "today")
+            if 'error' in weather_info_2:
+                output = gpt.weather_error_reply()
+            else:
+                output = gpt.weather_reply(weather_info_2)
+        else:
+            output = gpt.default(prompt, core_prompt)
+    else:
+        output = gpt.default(prompt, core_prompt)
 
     #Remove core_memory to new_prompt for the conversation
     new_prompt = new_prompt.replace(core_prompt,"")
     new_prompt = prompt + output + "\nHuman: "
 
-    with open('./database/conversation.txt','w') as myfile:
+    with open('./database/conversation.txt','w', encoding="utf-8") as myfile:
         myfile.write(new_prompt)
 
     # print("Sentiment: " + gpt.sentiment(output))
     print("Message: " + output) #Print Zelda's reply to the console
     talk(output) #TTS the reply
     save_output(output)
+
+def weather_ask(input):
+    talk(gpt.weather(input))
 
 while True:
     #Record audio when pressing q
@@ -123,7 +140,7 @@ while True:
     #TODO: Enable for punctuation
     recased_text = gpt.punctuate(transcribed_text)
     print("Human: " + recased_text)
-
+    
     ai_reply(recased_text)
 
     
