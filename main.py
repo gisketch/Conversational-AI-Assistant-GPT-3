@@ -8,15 +8,17 @@ from remove_memory import remove_memory
 from play_vid import Video_Player
 from clips import Clips
 import voice
-# import playsound
-# import os
+from playsound import playsound
+import os
+from record_token import save_output
 
 #OUTPUT AUDIO
 def talk(text):
-    video_player.change(Clips.talking())
     voice.talk(text)
+    video_player.change(Clips.talking())
+    playsound('./temp/temp_audio.mp3')
+    os.remove('./temp/temp_audio.mp3')
     # playsound.playsound('./temp/temp_audio2.mp3', True)
-    # os.remove('./temp/temp_audio2.mp3')
     video_player.change(Clips.idle())
 
 audio = pyaudio.PyAudio()
@@ -68,13 +70,13 @@ Limitations:
 
 ###############################################################
 
-voice = voice.Voice()
+voice = voice.Polly_Voice()
 video_player = Video_Player(Clips.boot()) #initialize
 
 #FF5555 NOTE!! Improve introductions
 global new_prompt
 
-with open('conversation.txt','r') as myfile:
+with open('./database/conversation.txt','r') as myfile:
     new_prompt = myfile.read()
 
 def ai_reply(input):
@@ -97,12 +99,13 @@ def ai_reply(input):
     new_prompt = new_prompt.replace(core_prompt,"")
     new_prompt = prompt + output + "\nHuman: "
 
-    with open('conversation.txt','w') as myfile:
+    with open('./database/conversation.txt','w') as myfile:
         myfile.write(new_prompt)
 
     # print("Sentiment: " + gpt.sentiment(output))
     print("Message: " + output) #Print Zelda's reply to the console
     talk(output) #TTS the reply
+    save_output(output)
 
 while True:
     #Record audio when pressing q

@@ -8,7 +8,7 @@ def save_token(token):
     day = now.day
     year = now.year
     #Open tokens.json file and save the token
-    with open('tokens.json', 'r') as f:
+    with open('./database/tokens.json', 'r') as f:
         data = json.load(f)
         available_data = data.get(f'{month}-{day}-{year}')
 
@@ -21,5 +21,12 @@ def save_token(token):
         todays_data['token'] += token
         todays_data['cost'] = "$" + str((data[f'{month}-{day}-{year}']['token']/1000)*0.02)
 
-    with open('tokens.json', 'w') as f:
+    with open('./database/tokens.json', 'w') as f:
+        json.dump(data, f)
+
+def save_output(char):
+    with open('./database/characters.json', 'r') as f:
+        data = json.load(f)
+        data['characters'] += len(char)
+    with open('./database/characters.json', 'w') as f:
         json.dump(data, f)

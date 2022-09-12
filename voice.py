@@ -5,6 +5,7 @@ import ffmpy
 import boto3
 from dotenv import load_dotenv
 import os
+from playsound import playsound
 
 load_dotenv()
 
@@ -36,11 +37,10 @@ class Polly_Voice:
                 region_name='us-east-1').client('polly')
 
     def talk(self, text):
-        response = self.polly_client.synthesize_speech(VoiceId='Joanna',
+        response = self.polly_client.synthesize_speech(VoiceId='Amy',
                 OutputFormat='mp3', 
                 Text = text,
-                Engine = 'neural')
-
-        file = open('speech.mp3', 'wb')
+                Engine = 'standard')
+        file = open('./temp/temp_audio.mp3', 'wb')
         file.write(response['AudioStream'].read())
         file.close()
